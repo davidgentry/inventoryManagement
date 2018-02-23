@@ -75,7 +75,9 @@ public class Inventory {
         // if not, return null
         return null;
     }
-    //void updatePart(int){}
+    public static void updatePart(int partIndex, Part part){
+        partInv.set(partIndex, part);
+    }
     
     
     //code to get current partIDCounter and current productIDCounter variables
