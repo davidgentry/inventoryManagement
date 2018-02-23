@@ -2,8 +2,10 @@ package inventorysystemdavegentry.View_Controller;
 
 import inventorysystemdavegentry.Model.InhousePart;
 import inventorysystemdavegentry.Model.Inventory;
+import static inventorysystemdavegentry.Model.Inventory.getPartInv;
 import inventorysystemdavegentry.Model.OutsourcedPart;
 import inventorysystemdavegentry.Model.Part;
+import static inventorysystemdavegentry.View_Controller.InventorySystemGUIController.tempPartIndex;
 import java.io.IOException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -14,6 +16,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
@@ -44,6 +47,12 @@ public class ModifyPartController {
     private TextField modMin;
     
     boolean outsourced;
+    
+    @FXML
+    private RadioButton inHouseSelected;
+
+    @FXML
+    private RadioButton outsourcedSelected;
     
      @FXML
     public ObservableList<Part> partData = FXCollections.observableArrayList();
@@ -116,5 +125,30 @@ public class ModifyPartController {
         companyORmachine.setText("COMPANY NAME");
     }
     
+    public void initialize(){
+    Part part = getPartInv().get(tempPartIndex);
+    int partID = getPartInv().get(tempPartIndex).getPartID();
+    modID.setText("Autoset: " + partID);
+    modName.setText(part.getName());
+    modInv.setText(Integer.toString(part.getInStock()));
+    modPrice.setText(Double.toString(part.getPrice()));
+    modMax.setText(Integer.toString(part.getMax()));
+    modMin.setText(Integer.toString(part.getMin()));
     
+    
+    if (part instanceof InhousePart){
+     companyORmachine.setText("MACHINE ID");
+     companyORmach.setText(Integer.toString(((InhousePart) getPartInv().get(tempPartIndex)).getMachineID()));
+    // inHouseSelected.setSelected(true);
+     
+     
+     
+    } else {
+     companyORmachine.setText("COMPANY NAME");
+     companyORmach.setText(((OutsourcedPart) getPartInv().get(tempPartIndex)).getCompanyName());
+     //outsourcedSelected.setSelected(true);
+     
+    }
+        
+    }
 }
