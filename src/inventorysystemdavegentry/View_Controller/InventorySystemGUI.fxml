@@ -24,8 +24,7 @@
                               <Font name="System Bold" size="12.0" />
                            </font>
                         </Label>
-                        <Button layoutX="224.0" layoutY="23.0" mnemonicParsing="false" onAction="#searchParts" text="Search" />
-                        <TextField fx:id="partSearchField" layoutX="284.0" layoutY="23.0" prefHeight="25.0" prefWidth="189.0" />
+                        <TextField fx:id="partSearchField" layoutX="284.0" layoutY="23.0" prefHeight="25.0" prefWidth="189.0" promptText="Search" />
                         <TableView fx:id="view" layoutX="14.0" layoutY="81.0" prefHeight="181.0" prefWidth="458.0" style="-fx-border-color: gray;">
                           <columns>
                             <TableColumn fx:id="partIDView" prefWidth="106.00003051757812" text="Part ID" />
@@ -58,8 +57,7 @@
                               <Font name="System Bold" size="12.0" />
                            </font>
                         </Label>
-                        <Button layoutX="224.0" layoutY="23.0" mnemonicParsing="false" onAction="#searchProducts" text="Search" />
-                        <TextField fx:id="productSearchField" layoutX="284.0" layoutY="23.0" prefHeight="25.0" prefWidth="189.0" />
+                        <TextField fx:id="productSearchField" layoutX="284.0" layoutY="23.0" prefHeight="25.0" prefWidth="189.0" promptText="Search" />
                         <TableView fx:id="view2" layoutX="14.0" layoutY="81.0" prefHeight="181.0" prefWidth="458.0" style="-fx-border-color: gray;">
                            <columns>
                               <TableColumn fx:id="productIDView" prefWidth="106.00003051757812" text="Part ID" />

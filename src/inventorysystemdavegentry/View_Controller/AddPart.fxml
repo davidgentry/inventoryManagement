@@ -89,8 +89,8 @@
                         <Font name="System Bold" size="12.0" />
                      </font>
                   </Label>
-                  <RadioButton alignment="CENTER_LEFT" mnemonicParsing="false" onAction="#handleInhouse" prefHeight="17.0" prefWidth="131.0" text="In-House" />
-                  <RadioButton mnemonicParsing="false" onAction="#handleOutsourced" prefHeight="17.0" prefWidth="131.0" text="Outsourced" />
+                  <RadioButton fx:id="inHouseSelected" alignment="CENTER_LEFT" mnemonicParsing="false" onAction="#handleInhouse" prefHeight="17.0" prefWidth="131.0" text="In-House" />
+                  <RadioButton fx:id="outsourcedSelected" mnemonicParsing="false" onAction="#handleOutsourced" prefHeight="17.0" prefWidth="131.0" text="Outsourced" />
                </children>
             </HBox>
             <Button layoutX="532.0" layoutY="457.0" mnemonicParsing="false" onAction="#handleAdd" text="Add" />

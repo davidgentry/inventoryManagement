@@ -19,6 +19,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
@@ -58,7 +59,15 @@ public class AddPartController  {
     @FXML
     private TextField addMin;
     
+    @FXML
+    private RadioButton inHouseSelected;
+    
+    @FXML
+    private RadioButton outsourcedSelected;
+    
     private int id;
+    
+   
     
     boolean outsourced;
     
@@ -131,12 +140,14 @@ public class AddPartController  {
     void handleInhouse(ActionEvent event) {
         outsourced = false;
         companyORmachine.setText("MACHINE ID");
+        inHouseSelected.setSelected(true);
     }
 
     @FXML
     void handleOutsourced(ActionEvent event) {
         outsourced = true;
         companyORmachine.setText("COMPANY NAME");
+        outsourcedSelected.setSelected(true);
     }
     
     

@@ -68,8 +68,22 @@ public class InventorySystemGUIController   {
     @FXML 
     private TextField productSearchField;
     
-    private Part modPart;
-    private Product modProduct;
+    //initialize variables for tracking parts/products to modify
+    public static Part tempPart;
+    public static Product tempProduct;
+    public static int tempPartIndex;
+    public static int tempProductIndex;
+    
+    
+    //getters to return the tempPart & tempProduct Indexes
+    public static int getTempPartIndex(){
+        return tempPartIndex;
+    }
+    
+    public static int getTempProductIndex(){
+        return tempProductIndex;
+    }
+    
     
    
     
@@ -113,11 +127,11 @@ public class InventorySystemGUIController   {
         alert.showAndWait()
             
                     .filter(response -> response == ButtonType.OK)
-                    .ifPresent(response -> InventorySystemDaveGentry.getPartData().remove(selectedPart));
+                    .ifPresent(response -> Inventory.getPartInv().remove(selectedPart));
 
            
         //update part table
-        view.setItems(mainApp.getPartData());
+        view.setItems(Inventory.getPartInv());
         
         } else {
         // handle if no selection present
@@ -142,11 +156,11 @@ public class InventorySystemGUIController   {
         alert.showAndWait()
             
                     .filter(response -> response == ButtonType.OK)
-                    .ifPresent(response -> InventorySystemDaveGentry.getProductData().remove(selectedProduct));
+                    .ifPresent(response -> Inventory.getProductInv().remove(selectedProduct));
 
            
         //update product table
-        view2.setItems(mainApp.getProductData());
+        view2.setItems(Inventory.getProductInv());
         
         } else {
         // handle if no selection present
@@ -158,7 +172,7 @@ public class InventorySystemGUIController   {
         alert.showAndWait();
         }
     }
-    
+   
 
     @FXML
     void exitApp(ActionEvent event) {
@@ -169,7 +183,9 @@ public class InventorySystemGUIController   {
     void modProduct(ActionEvent event) throws IOException {
          //System.out.println("Button Clicked");
          //get selected item from tableview view2
-        modProduct = view2.getSelectionModel().getSelectedItem();
+        tempProduct = view2.getSelectionModel().getSelectedItem();
+        //set index of tempProduct
+        tempProductIndex = getProductInv().indexOf(tempProduct);
         Parent addProductParent = FXMLLoader.load(getClass().getResource("ModifyProduct.fxml"));
         Scene addProductScene = new Scene(addProductParent);
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -181,7 +197,9 @@ public class InventorySystemGUIController   {
     void modifyPart(ActionEvent event) throws IOException {
         //System.out.println("Button Clicked");
         //get selected item from tableview view
-        modPart = view.getSelectionModel().getSelectedItem();
+        tempPart = view.getSelectionModel().getSelectedItem();
+        //set index of tempPart
+        tempPartIndex = getPartInv().indexOf(tempPart);
         Parent modifyPartParent = FXMLLoader.load(getClass().getResource("ModifyPart.fxml"));
         Scene addPartScene = new Scene(modifyPartParent);
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -190,16 +208,31 @@ public class InventorySystemGUIController   {
     }
     
     
-
     @FXML
-    void searchParts(ActionEvent event) throws IOException {
-        
+    private void initialize() {
+        // Initialize the Part table
+        partData = view.getItems();
         partIDView.setCellValueFactory(cellData -> cellData.getValue().partIDProperty().asObject());
         partNameView.setCellValueFactory(cellData -> cellData.getValue().partNameProperty());
+        inventoryLevelView.setCellValueFactory(cellData -> cellData.getValue().partInvProperty().asObject());
+        priceView.setCellValueFactory(cellData -> cellData.getValue().partPriceProperty().asObject());
+         // Initialize the Product table
+        productData = view2.getItems();
+        productIDView.setCellValueFactory(cellData -> cellData.getValue().productIDProperty().asObject());
+        productNameView.setCellValueFactory(cellData -> cellData.getValue().productNameProperty());
+        productInventoryLevelView.setCellValueFactory(cellData -> cellData.getValue().productInvProperty().asObject());
+        productPriceView.setCellValueFactory(cellData -> cellData.getValue().productPriceProperty().asObject());
+       
+        updateView();
+        updateView2();
+        
+       //Search Functionality for Parts/Products
         // Wrap the ObservableList in a FilteredList (initially display all data).
         FilteredList<Part> filteredPartData = new FilteredList<>(Inventory.getPartInv(), p -> true);
 
         // Set the filter Predicate whenever the filter changes.
+        partSearchField.setOnKeyPressed(p ->{
+        
         partSearchField.textProperty().addListener((observable, oldValue, newValue) -> {
             filteredPartData.setPredicate(part -> {
                 // If filter text is empty, display all persons.
@@ -219,6 +252,8 @@ public class InventorySystemGUIController   {
                 }
                 return false; 
             });
+      
+        });
         });
 
         // Wrap the FilteredList in a SortedList. 
@@ -229,112 +264,50 @@ public class InventorySystemGUIController   {
 
         // Add sorted (and filtered) data to the table.
         view.setItems(sortedPartData);
-        System.out.println(sortedPartData);
-    
+       
         
-    /*    
-        String searchField = partSearchField.getText();
-        boolean found = false;
-        try {
-            int number = Integer.parseInt(searchField);
-                for (Part p: partData){
-                    if (p.getPartID() == number){
-                        System.out.println("This is part " + number);
-                        found = true;
-                        
-                        partData = view.getItems();
-                        partData.add(p);
-                        
-                            partIDView.setCellValueFactory(new PropertyValueFactory<>("partID"));
-                            partNameView.setCellValueFactory(new PropertyValueFactory<>("name"));
-                            inventoryLevelView.setCellValueFactory(new PropertyValueFactory<>("inStock"));
-                            priceView.setCellValueFactory(new PropertyValueFactory<>("price"));
-                            
-                        view.setItems(partData);
-                    }
-                    
-                    if (found == false){
-                        Alert alert = new Alert(AlertType.INFORMATION);
-                        alert.setTitle("Uh Oh");
-                        alert.setHeaderText("Error!");
-                        alert.setContentText("Part Not Found");
-                        
-                        alert.showAndWait();
-                    }
-                }
-        }
-        catch(NumberFormatException e) {
-            
-            for(Part p: partData){
-                if(p.getName().equals(searchField)){
-                    System.out.println("This is part " + p.getPartID());
-                    found = true;
-                    
-                    partData = view.getItems();
-                    partData.add(p);
-                    
-                    partIDView.setCellValueFactory(new PropertyValueFactory<>("partID"));
-                    partNameView.setCellValueFactory(new PropertyValueFactory<>("name"));
-                    inventoryLevelView.setCellValueFactory(new PropertyValueFactory<>("inStock"));
-                    priceView.setCellValueFactory(new PropertyValueFactory<>("price"));
-                    view.setItems(partData);
-                    
-                }
-                if (found == false){
-                        Alert alert = new Alert(AlertType.INFORMATION);
-                        alert.setTitle("Uh Oh");
-                        alert.setHeaderText("Error!");
-                        alert.setContentText("Part Not Found");
-                        
-                        alert.showAndWait();
-            }
         
-        }
-                
-         
-    }
-        */
-    }
+        
+        //Product Search Functionallity
+        // Wrap the ObservableList in a FilteredList (initially display all data).
+        FilteredList<Product> filteredProductData = new FilteredList<>(Inventory.getProductInv(), p -> true);
 
-    @FXML
-    void searchProducts(ActionEvent event) {
-        String searchProducts = productSearchField.getText();
-        FilteredList<Product> searchProductResults = searchProducts(searchProducts);
-        SortedList<Product> sortedData = new SortedList<>(searchProductResults);
-        sortedData.comparatorProperty().bind(view2.comparatorProperty());
-        view2.setItems(sortedData);
-    }
-    
-     public FilteredList<Part> searchParts(String string){
-        return InventorySystemDaveGentry.getPartData().filtered(p -> p.getName().toLowerCase().contains(string.toLowerCase()));
-    }
-    
-    public FilteredList<Product> searchProducts(String string){
-        return InventorySystemDaveGentry.getProductData().filtered(p -> p.getName().toLowerCase().contains(string.toLowerCase()));
-    }
-    
- 
- 
-    
-    @FXML
-    private void initialize() {
-        // Initialize the Part table
-        partData = view.getItems();
-        partIDView.setCellValueFactory(cellData -> cellData.getValue().partIDProperty().asObject());
-        partNameView.setCellValueFactory(cellData -> cellData.getValue().partNameProperty());
-        inventoryLevelView.setCellValueFactory(cellData -> cellData.getValue().partInvProperty().asObject());
-        priceView.setCellValueFactory(cellData -> cellData.getValue().partPriceProperty().asObject());
-         // Initialize the Product table
-        productData = view2.getItems();
-        productIDView.setCellValueFactory(cellData -> cellData.getValue().productIDProperty().asObject());
-        productNameView.setCellValueFactory(cellData -> cellData.getValue().productNameProperty());
-        productInventoryLevelView.setCellValueFactory(cellData -> cellData.getValue().productInvProperty().asObject());
-        productPriceView.setCellValueFactory(cellData -> cellData.getValue().productPriceProperty().asObject());
-        
-        updateView();
-        updateView2();
+        // Set the filter Predicate whenever the filter changes.
+        productSearchField.setOnKeyReleased(p ->{
+        productSearchField.textProperty().addListener((observable, oldValue, newValue) -> {
+            filteredProductData.setPredicate(product -> {
+                // If filter text is empty, display all persons.
+                if (newValue == null || newValue.isEmpty()) {
+                    return true;
+                }
+
+                // Compare first name and last name of every person with filter text.
+                String lowerCaseFilter = newValue.toLowerCase();
+
+                if (Integer.toString(product.getProductID()).equals(newValue)) {
+                    
+                    return true; 
+                } else if (product.getName().equals(lowerCaseFilter)) {
+                    
+                    return true; 
+                }
+                return false; 
+            });
+        });
+        });
+
+        // Wrap the FilteredList in a SortedList. 
+        SortedList<Product> sortedProductData = new SortedList<>(filteredProductData);
+
+        // Bind the SortedList comparator to the TableView comparator.
+        sortedProductData.comparatorProperty().bind(view2.comparatorProperty());
+
+        // Add sorted (and filtered) data to the table.
+        view2.setItems(sortedProductData);
         
     }
+      
+    
     
     public void updateView() {
         view.setItems(getPartInv());
@@ -352,6 +325,9 @@ public class InventorySystemGUIController   {
           this.mainApp = mainApp;
         //update parts table
         
+        updateView();
+        updateView2();
+       
        
         
     }
