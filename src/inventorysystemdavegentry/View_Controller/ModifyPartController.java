@@ -57,7 +57,7 @@ public class ModifyPartController {
      @FXML
     public ObservableList<Part> partData = FXCollections.observableArrayList();
 
-     
+     public static int partID;
     
     @FXML
     void handleCancel(ActionEvent event) throws IOException {
@@ -73,7 +73,7 @@ public class ModifyPartController {
 
     @FXML
     void handleSave(ActionEvent event) throws IOException {
-           System.out.println("addPart button clicked");
+        
         String id = modID.getText();
         String name = modName.getText();
         String inv = modInv.getText();
@@ -84,14 +84,14 @@ public class ModifyPartController {
         
         if (outsourced == false){
             InhousePart inhousePart = new InhousePart();
-            inhousePart.setPartID(Integer.parseInt(id));
+            inhousePart.setPartID(partID);
             inhousePart.setName(name);
             inhousePart.setPrice(Double.parseDouble(price));
             inhousePart.setMax(Integer.parseInt(max));
             inhousePart.setMin(Integer.parseInt(min));
             inhousePart.setInStock(Integer.parseInt(inv));
             inhousePart.setMachineID(Integer.parseInt(compORmach));
-            Inventory.addPartData(inhousePart);        
+            Inventory.updatePart(tempPartIndex, inhousePart);       
         } else {
             OutsourcedPart outsourcedPart = new OutsourcedPart();
             outsourcedPart.setPartID(Integer.parseInt(id));
@@ -101,7 +101,7 @@ public class ModifyPartController {
             outsourcedPart.setMin(Integer.parseInt(min));
             outsourcedPart.setInStock(Integer.parseInt(inv));
             outsourcedPart.setCompanyName(compORmach);
-            Inventory.addPartData(outsourcedPart);
+            Inventory.updatePart(tempPartIndex, outsourcedPart);
             //System.out.println(outsourcedPart);
             
         }
@@ -127,7 +127,7 @@ public class ModifyPartController {
     
     public void initialize(){
     Part part = getPartInv().get(tempPartIndex);
-    int partID = getPartInv().get(tempPartIndex).getPartID();
+    partID = getPartInv().get(tempPartIndex).getPartID();
     modID.setText("Autoset: " + partID);
     modName.setText(part.getName());
     modInv.setText(Integer.toString(part.getInStock()));
