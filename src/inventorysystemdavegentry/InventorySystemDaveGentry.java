@@ -30,12 +30,10 @@ public class InventorySystemDaveGentry extends Application {
     private static ObservableList<Part> partData = FXCollections.observableArrayList();
     private static ObservableList<Product> productData = FXCollections.observableArrayList();
    
-  
+    /**
+     *
+     */
     
-    public InventorySystemDaveGentry() {
-        
-
-    }
     
       //update parts table
     public static ObservableList<Part> getPartData() {

@@ -36,24 +36,16 @@ public abstract class Part {
      */
     public Part() 
    {
-   name = new SimpleStringProperty ("test");
-   price = new SimpleDoubleProperty (0.0);
-   inStock = new SimpleIntegerProperty(0);
-   partID = new SimpleIntegerProperty(0);
+   name = new SimpleStringProperty ("");
+   price = new SimpleDoubleProperty ();
+   inStock = new SimpleIntegerProperty();
+   partID = new SimpleIntegerProperty();
+   min = new SimpleIntegerProperty();
+   max = new SimpleIntegerProperty();
   
    }
-    
-   /*
-    public Part(int PartID, String name, double price, int inStock){
-        setPartID(PartID);
-        setName(name);
-        setPrice(price);
-        setInStock(inStock);   
-    }
-
-*/
-    
-    
+   
+     
     //getters
      public String getName() {
          return name.get();

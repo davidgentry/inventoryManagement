@@ -19,6 +19,7 @@ public class Inventory {
     //need variables to keep track of partID and productID auto-generated counts
     private static int partIDCounter = 0;
     private static int productIDCounter = 0;
+   
     
     
     //observable list getters
@@ -53,7 +54,9 @@ public class Inventory {
     }
    
     //void updateProduct(int){}
-    
+    public static void updateProduct(int tempProductIndex, Product product){
+        productInv.set(tempProductIndex, product);
+    }
     
     //addPart 
     public static void addPartData(Part part){partInv.add(part);}

@@ -68,7 +68,7 @@ public class InventorySystemGUIController   {
     @FXML 
     private TextField productSearchField;
     
-    //initialize variables for tracking parts/products to modify
+    //initialize variables for tracking parts/products to 
     public static Part tempPart;
     public static Product tempProduct;
     public static int tempPartIndex;

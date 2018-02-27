@@ -33,14 +33,16 @@ public class Product {
     
     //constructor to initialize variables
     public Product(){
-    productID = new SimpleIntegerProperty(0);
-    name = new SimpleStringProperty("test");
-    price = new SimpleDoubleProperty(0.0);
-    inStock = new SimpleIntegerProperty(0);
+    productID = new SimpleIntegerProperty();
+    name = new SimpleStringProperty();
+    price = new SimpleDoubleProperty();
+    inStock = new SimpleIntegerProperty();
+    min = new SimpleIntegerProperty();
+    max = new SimpleIntegerProperty();
     
     }
     
-    
+ 
     public Product(int productID, String name, int inStock, double price, int max, int min){
       setProductID(productID);
       setName(name);
@@ -77,6 +79,7 @@ public class Product {
         return productID.get();
     }
     
+  
     //property methods
     public IntegerProperty productIDProperty(){
         return productID;
@@ -120,6 +123,7 @@ public class Product {
     public void setProductID(Integer productID){
         this.productID = new SimpleIntegerProperty(productID);
     }
+    
     
     
     //set associatedParts

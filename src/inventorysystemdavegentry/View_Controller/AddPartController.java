@@ -113,7 +113,7 @@ public class AddPartController  {
             outsourcedPart.setInStock(Integer.parseInt(inv));
             outsourcedPart.setCompanyName(compORmach);
             Inventory.addPartData(outsourcedPart);
-            System.out.println(outsourcedPart);
+            
             
         }
         

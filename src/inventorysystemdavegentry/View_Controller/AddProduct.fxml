@@ -93,7 +93,7 @@
                <children>
                   <Pane layoutY="14.0" prefHeight="598.0" prefWidth="573.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <TableView fx:id="partView" layoutX="100.0" layoutY="103.0" prefHeight="134.0" prefWidth="447.0">
+                        <TableView fx:id="view" layoutX="100.0" layoutY="103.0" prefHeight="134.0" prefWidth="447.0">
                           <columns>
                             <TableColumn fx:id="partIDView" prefWidth="75.0" text="Part ID" />
                             <TableColumn fx:id="partNameView" prefWidth="75.0" text="Part Name" />
@@ -104,10 +104,10 @@
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy>
                         </TableView>
-                        <TableView fx:id="productView" layoutX="100.0" layoutY="344.0" prefHeight="134.0" prefWidth="447.0">
+                        <TableView fx:id="view2" layoutX="100.0" layoutY="344.0" prefHeight="134.0" prefWidth="447.0">
                            <columns>
                               <TableColumn fx:id="partIDView2" prefWidth="75.0" text="Part ID" />
-                              <TableColumn fx:id="partNamveView2" prefWidth="75.0" text="Part Name" />
+                              <TableColumn fx:id="partNameView2" prefWidth="75.0" text="Part Name" />
                               <TableColumn fx:id="inventoryLevelView2" prefWidth="75.0" text="Inventory Level" />
                               <TableColumn fx:id="priceView2" minWidth="-1.0" prefWidth="75.0" text="Price per Unit" />
                            </columns>
@@ -116,11 +116,13 @@
                            </columnResizePolicy>
                         </TableView>
                         <Button layoutX="315.0" layoutY="67.0" mnemonicParsing="false" onAction="#searchAddProduct" text="Search" />
-                        <TextField layoutX="382.0" layoutY="67.0" prefHeight="25.0" prefWidth="163.0" />
+                        <TextField fx:id="partSearchField" layoutX="382.0" layoutY="67.0" prefHeight="25.0" prefWidth="163.0" />
                         <Button layoutX="455.0" layoutY="523.0" mnemonicParsing="false" onAction="#saveProduct" text="Save" />
                         <Button layoutX="504.0" layoutY="523.0" mnemonicParsing="false" onAction="#cancelProduct" text="Cancel" />
-                        <Button layoutX="504.0" layoutY="488.0" mnemonicParsing="false" onAction="#deleteProduct" text="Delete" />
-                        <Button layoutX="509.0" layoutY="256.0" mnemonicParsing="false" onAction="#addProduct" text="Add" />
+                        <Button layoutX="504.0" layoutY="488.0" mnemonicParsing="false" onAction="#deletePartFromProduct" text="Delete" />
+                        <Button layoutX="509.0" layoutY="256.0" mnemonicParsing="false" onAction="#addPartToProduct" text="Add" />
+                        <Label layoutX="100.0" layoutY="71.0" text="Master Parts List" />
+                        <Label layoutX="100.0" layoutY="316.0" text="Product's Associated Parts" />
                      </children>
                   </Pane>
                </children>
