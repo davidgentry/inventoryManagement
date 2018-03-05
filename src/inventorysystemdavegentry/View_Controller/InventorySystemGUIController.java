@@ -176,6 +176,11 @@ public class InventorySystemGUIController   {
 
     @FXML
     void exitApp(ActionEvent event) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Exit?");
+            alert.setHeaderText("Unsaved Changes may be lost");
+            alert.setContentText("If you exit now, any unsaved changes will be lost!");
+            alert.showAndWait();
         System.exit(1);
     }
 
@@ -184,6 +189,7 @@ public class InventorySystemGUIController   {
          //System.out.println("Button Clicked");
          //get selected item from tableview view2
         tempProduct = view2.getSelectionModel().getSelectedItem();
+        if (tempProduct != null){
         //set index of tempProduct
         tempProductIndex = getProductInv().indexOf(tempProduct);
         Parent addProductParent = FXMLLoader.load(getClass().getResource("ModifyProduct.fxml"));
@@ -191,13 +197,23 @@ public class InventorySystemGUIController   {
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setScene(addProductScene);
         window.show();
-    }
+        } else {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("OOPS!");
+            alert.setHeaderText("No Product Selected!");
+            alert.setContentText("Please select a product from the table.");
+            alert.showAndWait();  
+                
+                }
+        }
+    
 
     @FXML
     void modifyPart(ActionEvent event) throws IOException {
         //System.out.println("Button Clicked");
         //get selected item from tableview view
         tempPart = view.getSelectionModel().getSelectedItem();
+        if (tempPart != null){
         //set index of tempPart
         tempPartIndex = getPartInv().indexOf(tempPart);
         Parent modifyPartParent = FXMLLoader.load(getClass().getResource("ModifyPart.fxml"));
@@ -205,6 +221,13 @@ public class InventorySystemGUIController   {
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setScene(addPartScene);
         window.show();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("OOPS!");
+            alert.setHeaderText("No Part Selected!");
+            alert.setContentText("Please select a part from the table.");
+            alert.showAndWait();  
+        }
     }
     
     

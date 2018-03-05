@@ -60,8 +60,8 @@
                         <TextField fx:id="productSearchField" layoutX="284.0" layoutY="23.0" prefHeight="25.0" prefWidth="189.0" promptText="Search" />
                         <TableView fx:id="view2" layoutX="14.0" layoutY="81.0" prefHeight="181.0" prefWidth="458.0" style="-fx-border-color: gray;">
                            <columns>
-                              <TableColumn fx:id="productIDView" prefWidth="106.00003051757812" text="Part ID" />
-                              <TableColumn fx:id="productNameView" prefWidth="118.99996948242188" text="Part Name" />
+                              <TableColumn fx:id="productIDView" prefWidth="106.00003051757812" text="Product ID" />
+                              <TableColumn fx:id="productNameView" prefWidth="118.99996948242188" text="Product Name" />
                               <TableColumn fx:id="productInventoryLevelView" minWidth="0.0" prefWidth="119.0" text="Inventory Level" />
                               <TableColumn fx:id="productPriceView" prefWidth="112.0" text="Price per unit" />
                            </columns>

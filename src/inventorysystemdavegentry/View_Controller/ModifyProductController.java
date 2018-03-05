@@ -112,6 +112,11 @@ public class ModifyProductController {
     void cancelModifyPart(ActionEvent event) throws IOException {
            //System.out.println("Button Clicked");
         Parent cancelPartParent = FXMLLoader.load(getClass().getResource("InventorySystemGUI.fxml"));
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Cancel?");
+            alert.setHeaderText("Changes won't be saved");
+            alert.setContentText("Really Cancel? Any changes will be lost!");
+            alert.showAndWait();
         Scene mainScene = new Scene(cancelPartParent);
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setScene(mainScene);
