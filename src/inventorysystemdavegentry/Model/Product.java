@@ -95,6 +95,10 @@ public class Product {
     public DoubleProperty productPriceProperty(){
         return price;
     }
+    
+    public ObservableList<Part> getAssociatedParts(){
+        return associatedParts;
+    }
    
     
     
@@ -132,11 +136,7 @@ public class Product {
         this.associatedParts = associatedParts;
     
     }
-    
- 
-    //other methods....
-    
- 
+   
     //lookup associated part using partID
     
     public Part lookupAssociatedPart(int partID){

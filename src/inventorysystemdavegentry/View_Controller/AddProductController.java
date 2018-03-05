@@ -128,7 +128,7 @@ public class AddProductController {
 
     @FXML
     void deletePartFromProduct(ActionEvent event) {
-        Part selectedPart = view.getSelectionModel().getSelectedItem();
+        Part selectedPart = view2.getSelectionModel().getSelectedItem();
         if (selectedPart != null){
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Remove Part");
@@ -168,7 +168,7 @@ public class AddProductController {
         product.setMax(Integer.parseInt(max));
         product.setMin(Integer.parseInt(min));
         Inventory.addProductData(product);
-        //product.setAssociatedParts(partData);
+        product.setAssociatedParts(associatedParts);
         
         
         Parent cancelPartParent = FXMLLoader.load(getClass().getResource("InventorySystemGUI.fxml"));
@@ -177,14 +177,12 @@ public class AddProductController {
         window.setScene(mainScene);
         window.show();
     }
-
-    @FXML
-    void searchAddProduct(ActionEvent event) {
-
-    }
     
        @FXML
        private void initialize() {
+           
+           id = Inventory.getProductIdValue();
+           addProductID.setText("Prod ID = " + id);
            
         // Initialize the Part table
         partData = view.getItems();

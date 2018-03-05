@@ -115,8 +115,7 @@
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy>
                         </TableView>
-                        <Button layoutX="315.0" layoutY="67.0" mnemonicParsing="false" onAction="#searchAddProduct" text="Search" />
-                        <TextField fx:id="partSearchField" layoutX="382.0" layoutY="67.0" prefHeight="25.0" prefWidth="163.0" />
+                        <TextField fx:id="partSearchField" layoutX="382.0" layoutY="67.0" prefHeight="25.0" prefWidth="163.0" promptText="Search..." />
                         <Button layoutX="455.0" layoutY="523.0" mnemonicParsing="false" onAction="#saveProduct" text="Save" />
                         <Button layoutX="504.0" layoutY="523.0" mnemonicParsing="false" onAction="#cancelProduct" text="Cancel" />
                         <Button layoutX="504.0" layoutY="488.0" mnemonicParsing="false" onAction="#deletePartFromProduct" text="Delete" />

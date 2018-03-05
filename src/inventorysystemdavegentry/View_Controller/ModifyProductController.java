@@ -21,6 +21,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -91,6 +93,18 @@ public class ModifyProductController {
 
     @FXML
     void addPart(ActionEvent event) {
+        Part selectedPart = view.getSelectionModel().getSelectedItem();
+        if (selectedPart != null){
+       associatedParts.add(selectedPart);
+       setAssociatedPartsView();
+        } else { //if the part isn't selected
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("OOPS!");
+            alert.setHeaderText("No Selection!");
+            alert.setContentText("Please select a part from the top table.");
+            alert.showAndWait();
+        }
+      
 
     }
 
@@ -106,16 +120,27 @@ public class ModifyProductController {
 
     @FXML
     void deletePart(ActionEvent event) {
-
-    }
-
-    @FXML
-    void maximize(ActionEvent event) {
-
-    }
-
-    @FXML
-    void minimize(ActionEvent event) {
+        Part selectedPart = view2.getSelectionModel().getSelectedItem();
+        if (selectedPart != null){
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Remove Part");
+            alert.setHeaderText("Remove Part from Product?");
+            alert.setContentText("Click OK to remove the part from the product.");
+            alert.showAndWait()
+                    
+                    .filter(response -> response == ButtonType.OK)
+                    .ifPresent(response -> associatedParts.remove(selectedPart));
+            
+            setAssociatedPartsView();
+       
+        } else { //if the part isn't selected
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("OOPS!");
+            alert.setHeaderText("No Selection!");
+            alert.setContentText("Please select a part from the top table.");
+            alert.showAndWait();
+                    
+        }
 
     }
 
@@ -136,7 +161,7 @@ public class ModifyProductController {
         product.setMax(Integer.parseInt(getMax));
         product.setMin(Integer.parseInt(getMin));
         Inventory.updateProduct(tempProductIndex, product);
-        //product.setAssociatedParts(partData);
+        product.setAssociatedParts(associatedParts);
         
         
         Parent cancelPartParent = FXMLLoader.load(getClass().getResource("InventorySystemGUI.fxml"));
@@ -146,14 +171,18 @@ public class ModifyProductController {
         window.show();
 
     }
-
-    @FXML
-    void searchParts(ActionEvent event) {
-
-    }
     
    @FXML
        private void initialize() {
+           
+        Product product = getProductInv().get(tempProductIndex);
+        productID = getProductInv().get(tempProductIndex).getProductID();
+        ID.setText("Autoset: " + productID);
+        name.setText(product.getName());
+        inv.setText(Integer.toString(product.getInStock()));
+        price.setText(Double.toString(product.getPrice()));
+        max.setText(Integer.toString(product.getMax()));
+        min.setText(Integer.toString(product.getMin()));
            
         // Initialize the Part table
         partData = view.getItems();
@@ -165,13 +194,13 @@ public class ModifyProductController {
         setPartView();
         
         // Initialize the associated Parts table
-        associatedParts = view2.getItems();
+        associatedParts = product.getAssociatedParts();
         partID2.setCellValueFactory(cellData -> cellData.getValue().partIDProperty().asObject());
         partName2.setCellValueFactory(cellData -> cellData.getValue().partNameProperty());
         inventoryLevel2.setCellValueFactory(cellData -> cellData.getValue().partInvProperty().asObject());
         pricePerUnit2.setCellValueFactory(cellData -> cellData.getValue().partPriceProperty().asObject());
         
-        
+        setAssociatedPartsView();
         //Search Functionality for Parts/Products
         // Wrap the ObservableList in a FilteredList (initially display all data).
         FilteredList<Part> filteredPartData = new FilteredList<>(Inventory.getPartInv(), p -> true);

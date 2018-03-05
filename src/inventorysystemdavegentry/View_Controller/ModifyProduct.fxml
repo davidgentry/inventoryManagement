@@ -43,7 +43,6 @@
                               <Label layoutX="10.0" layoutY="86.0" minWidth="-Infinity" prefHeight="17.0" prefWidth="128.0" text="INV" GridPane.rowIndex="2" />
                               <Label layoutX="10.0" layoutY="149.0" minWidth="-Infinity" prefHeight="17.0" prefWidth="128.0" text="PRICE" GridPane.rowIndex="3" />
                               <Label layoutX="10.0" layoutY="162.0" minWidth="-Infinity" prefHeight="17.0" prefWidth="128.0" text="MAX" GridPane.rowIndex="4" />
-                              <Label layoutX="10.0" layoutY="176.0" minWidth="-Infinity" prefHeight="17.0" prefWidth="128.0" text="COMPANY NAME" GridPane.rowIndex="5" />
                               <TextField fx:id="ID" promptText="Auto-Gen - Disabled" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS">
                                  <font>
                                     <Font size="10.0" />
@@ -65,11 +64,6 @@
                                  </font>
                               </TextField>
                               <TextField fx:id="max" prefHeight="25.0" prefWidth="67.0" promptText="Max" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4">
-                                 <font>
-                                    <Font name="System Italic" size="10.0" />
-                                 </font>
-                              </TextField>
-                              <TextField fx:id="company" promptText="Comp Name" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5">
                                  <font>
                                     <Font name="System Italic" size="10.0" />
                                  </font>
@@ -121,8 +115,7 @@
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy>
                         </TableView>
-                        <Button layoutX="315.0" layoutY="67.0" mnemonicParsing="false" onAction="#searchParts" text="Search" />
-                        <TextField fx:id="searchPartsField" layoutX="382.0" layoutY="67.0" prefHeight="25.0" prefWidth="163.0" />
+                        <TextField fx:id="searchPartsField" layoutX="382.0" layoutY="67.0" prefHeight="25.0" prefWidth="163.0" promptText="Search..." />
                         <Button layoutX="455.0" layoutY="523.0" mnemonicParsing="false" onAction="#saveModifyPart" text="Save" />
                         <Button layoutX="504.0" layoutY="523.0" mnemonicParsing="false" onAction="#cancelModifyPart" text="Cancel" />
                         <Button layoutX="504.0" layoutY="488.0" mnemonicParsing="false" onAction="#deletePart" text="Delete" />
