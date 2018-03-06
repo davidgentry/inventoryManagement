@@ -68,6 +68,8 @@ public class InventorySystemGUIController   {
     @FXML 
     private TextField productSearchField;
     
+    boolean hasZeroParts;
+    
     //initialize variables for tracking parts/products to 
     public static Part tempPart;
     public static Product tempProduct;
@@ -147,7 +149,10 @@ public class InventorySystemGUIController   {
     @FXML
     void deleteProduct(ActionEvent event) {
         Product selectedProduct = view2.getSelectionModel().getSelectedItem();
+        hasZeroParts = selectedProduct.getAssociatedParts().isEmpty();
         if (selectedProduct != null) {
+            if (hasZeroParts){
+            
         //confirmation message
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirm Delete...");
@@ -159,9 +164,16 @@ public class InventorySystemGUIController   {
                     .ifPresent(response -> Inventory.getProductInv().remove(selectedProduct));
 
            
-        //update product table
-        view2.setItems(Inventory.getProductInv());
-        
+            //update product table
+            view2.setItems(Inventory.getProductInv());
+        } else{
+            //handle if selection has Parts to NOT ALLOW deletion
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Cannot Delete Product!");
+        alert.setHeaderText("Parts Associated with Product");
+        alert.setContentText("You must first delete associated parts from product");        
+        alert.showAndWait();
+            }
         } else {
         // handle if no selection present
         Alert alert = new Alert(Alert.AlertType.WARNING);
