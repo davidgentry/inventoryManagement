@@ -87,31 +87,33 @@ public class AddPartController  {
 
     @FXML
     void handleAdd(ActionEvent event) throws IOException {
+        
         String name = addName.getText();
-        String inv = addInv.getText();
-        String price = addPrice.getText();
-        String max = addMax.getText();
-        String min = addMin.getText();
+        int inv = tryParseInt(addInv.getText());
+        Double price = tryParseDouble(addPrice.getText());
+        int max = tryParseInt(addMax.getText());
+        int min = tryParseInt(addMin.getText());
         String compORmach = addCompany.getText();
         
+       if (validInput()){ 
         if (outsourced == false){
             InhousePart inhousePart = new InhousePart();
             inhousePart.setPartID(id);
             inhousePart.setName(name);
-            inhousePart.setPrice(Double.parseDouble(price));
-            inhousePart.setMax(Integer.parseInt(max));
-            inhousePart.setMin(Integer.parseInt(min));
-            inhousePart.setInStock(Integer.parseInt(inv));
+            inhousePart.setPrice(price);
+            inhousePart.setMax(max);
+            inhousePart.setMin(min);
+            inhousePart.setInStock(inv);
             inhousePart.setMachineID(Integer.parseInt(compORmach));
             Inventory.addPartData(inhousePart);        
         } else {
             OutsourcedPart outsourcedPart = new OutsourcedPart();
             outsourcedPart.setPartID(id);
             outsourcedPart.setName(name);
-            outsourcedPart.setPrice(Double.parseDouble(price));
-            outsourcedPart.setMax(Integer.parseInt(max));
-            outsourcedPart.setMin(Integer.parseInt(min));
-            outsourcedPart.setInStock(Integer.parseInt(inv));
+            outsourcedPart.setPrice(price);
+            outsourcedPart.setMax(max);
+            outsourcedPart.setMin(min);
+            outsourcedPart.setInStock(inv);
             outsourcedPart.setCompanyName(compORmach);
             Inventory.addPartData(outsourcedPart);
             
@@ -123,6 +125,13 @@ public class AddPartController  {
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setScene(mainScene);
         window.show();
+    } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ERROR");
+            alert.setHeaderText("Invalid Input");
+            alert.setContentText("Please Correct Invalid Input");
+            alert.showAndWait();
+       }
     }
     
 
@@ -141,6 +150,29 @@ public class AddPartController  {
         window.show();
 
     }
+    
+       boolean invalidInv(){
+        int minInt =  tryParseInt(addMin.getText());
+        int maxInt = tryParseInt(addMax.getText());
+        int invInt = tryParseInt(addInv.getText());
+       
+        //verify that inventory is between minimum and maximum for each product
+        if (invInt < minInt || invInt > maxInt){
+            return true;
+        } else {
+            return false;
+        }
+    }
+    boolean invalidMinOrMax(){
+        int minInt =  tryParseInt(addMin.getText());
+        int maxInt = tryParseInt(addMax.getText());
+        //verify that min is not greater than max and vice versa
+        if (minInt > maxInt || maxInt < minInt){
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     @FXML
     void handleInhouse(ActionEvent event) {
@@ -155,6 +187,68 @@ public class AddPartController  {
         companyORmachine.setText("COMPANY NAME");
         outsourcedSelected.setSelected(true);
     }
+    
+      int tryParseInt(String value){
+        int newValue = 0;
+        if (value != null && value.length() > 0) {
+            try {
+                newValue += Integer.parseInt(value);
+                    } 
+            catch (NumberFormatException e) {
+                return 0;
+            }
+        } 
+        return newValue;
+    } 
+    
+    Double tryParseDouble(String value){
+        Double newValue = 0.0;
+        if (value != null && value.length() > 0) {
+            try {
+                newValue += Double.parseDouble(value);
+                    } 
+            catch (NumberFormatException e) {
+                return -1.0;
+            }
+        }
+        
+        return newValue;
+    } 
+    
+    boolean validInput() {
+       String errorMessageText = "";
+       if (addName.getText().length() == 0 || addName.getText() == null ){
+           errorMessageText += ("Error!Please add a valid product name.\n\n");
+       }
+       
+       if (addInv.getText().length() == 0 || addInv.getText() == null){
+           errorMessageText += ("Error!Please add a valid product inventory level.\n\n");
+       }
+       
+       if (addPrice.getText().length() == 0 || addPrice.getText() == null ){
+           errorMessageText += ("Error!Please add a valid product price.\n\n");
+       }
+    
+       if (invalidInv()){
+           errorMessageText += ("Insufficient inventory.  Please adjust inventory amount to a number between minimum and maximum amounts.\n\n");
+       }
+       
+       if (invalidMinOrMax()){
+           errorMessageText += ("Minimum cannot be larger than maximum, and maximum cannot be less than minimum.  Please adjust.\n\n");
+       }
+    
+       if (errorMessageText.length() == 0) {
+        return true;
+   
+   } else {
+           Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ERROR");
+            alert.setHeaderText("Invalid Input");
+            alert.setContentText(errorMessageText);
+            alert.showAndWait();
+            return false;
+       }
+   }
     
     
 

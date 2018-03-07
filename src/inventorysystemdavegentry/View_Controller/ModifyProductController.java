@@ -158,6 +158,7 @@ public class ModifyProductController {
         String getMax = max.getText();
         String getMin = min.getText();
         
+        if (validInput()){
         Product product = new Product();
         product.setProductID(productID);
         product.setName(getName);
@@ -175,7 +176,129 @@ public class ModifyProductController {
         window.setScene(mainScene);
         window.show();
 
+    } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ERROR");
+            alert.setHeaderText("Invalid Input");
+            alert.setContentText("Please Correct Invalid Input");
+            alert.showAndWait();
+        }
     }
+    
+    int tryParseInt(String value){
+        int newValue = 0;
+        if (value != null && value.length() > 0) {
+            try {
+                newValue += Integer.parseInt(value);
+                    } 
+            catch (NumberFormatException e) {
+                return 0;
+            }
+        } 
+        return newValue;
+    } 
+    
+    Double tryParseDouble(String value){
+        Double newValue = 0.0;
+        if (value != null && value.length() > 0) {
+            try {
+                newValue += Double.parseDouble(value);
+                    } 
+            catch (NumberFormatException e) {
+                return -1.0;
+            }
+        }
+        
+        return newValue;
+    }
+    
+    boolean invalidPrice(){
+        Double productPrice = tryParseDouble(price.getText()); 
+        Double partPriceTotal = 0.00;
+        
+        for ( int i = 0; i < associatedParts.size(); i++ ){
+           partPriceTotal += associatedParts.get(i).getPrice();
+         System.out.println(partPriceTotal);  
+         System.out.println(productPrice);
+        }
+        //check to see if the sum of all part prices is more than the product price
+        if (partPriceTotal > productPrice){
+            return true;
+        } else {
+            return false;
+        }
+        
+        }
+    
+    boolean invalidInv(){
+        int minInt =  tryParseInt(min.getText());
+        int maxInt = tryParseInt(max.getText());
+        int invInt = tryParseInt(inv.getText());
+       
+        //verify that inventory is between minimum and maximum for each product
+        if (invInt < minInt || invInt > maxInt){
+            return true;
+        } else {
+            return false;
+        }
+    }
+    boolean invalidMinOrMax(){
+        int minInt =  tryParseInt(min.getText());
+        int maxInt = tryParseInt(max.getText());
+        //verify that min is not greater than max and vice versa
+        if (minInt > maxInt || maxInt < minInt){
+            return true;
+        } else {
+            return false;
+        }
+    }
+   
+   
+
+   boolean validInput() {
+       String errorMessageText = "";
+       if (name.getText().length() == 0 || name.getText() == null ){
+           errorMessageText += ("Error!Please add a valid product name.\n\n");
+       }
+       
+       if (inv.getText().length() == 0 || inv.getText() == null){
+           errorMessageText += ("Error!Please add a valid product inventory level.\n\n");
+       }
+       
+       if (price.getText().length() == 0 || price.getText() == null ){
+           errorMessageText += ("Error!Please add a valid product price.\n\n");
+       }
+       
+       if (invalidPrice()){
+           errorMessageText += ("The sum of part prices is greater than the product.  Please adjust product price!\n\n");
+       }
+       
+       if (invalidInv()){
+           errorMessageText += ("Insufficient inventory.  Please adjust inventory amount to a number between minimum and maximum amounts.\n\n");
+       }
+       
+       if (invalidMinOrMax()){
+           errorMessageText += ("Minimum cannot be larger than maximum, and maximum cannot be less than minimum.  Please adjust.\n\n");
+       }
+       
+       if (associatedParts.size() < 1){
+           errorMessageText += ("Please add a part to the product. Products must contain at least one part.\n\n");
+       }
+       
+       
+ 
+       if (errorMessageText.length() == 0) {
+        return true;
+   
+   } else {
+           Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ERROR");
+            alert.setHeaderText("Invalid Input");
+            alert.setContentText(errorMessageText);
+            alert.showAndWait();
+            return false;
+       }
+   }
     
    @FXML
        private void initialize() {

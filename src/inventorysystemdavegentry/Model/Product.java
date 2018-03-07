@@ -26,19 +26,19 @@ public class Product {
     private StringProperty name;
     private DoubleProperty price;
     private IntegerProperty inStock;
-    private IntegerProperty min;
+    protected IntegerProperty min;
     private IntegerProperty max;
     private ObservableList<Part> associatedParts = FXCollections.observableArrayList(); 
    
     
     //constructor to initialize variables
     public Product(){
-    productID = new SimpleIntegerProperty();
-    name = new SimpleStringProperty();
-    price = new SimpleDoubleProperty();
-    inStock = new SimpleIntegerProperty();
-    min = new SimpleIntegerProperty();
-    max = new SimpleIntegerProperty();
+    productID = new SimpleIntegerProperty(0);
+    name = new SimpleStringProperty("");
+    price = new SimpleDoubleProperty(0.0);
+    inStock = new SimpleIntegerProperty(0);
+    min = new SimpleIntegerProperty(0);
+    max = new SimpleIntegerProperty(0);
     
     }
     
@@ -158,6 +158,7 @@ public class Product {
         Part part = lookupAssociatedPart(partID);
         return associatedParts.remove(part);
     }
+    
     
     
    

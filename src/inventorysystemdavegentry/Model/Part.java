@@ -37,11 +37,11 @@ public abstract class Part {
     public Part() 
    {
    name = new SimpleStringProperty ("");
-   price = new SimpleDoubleProperty ();
-   inStock = new SimpleIntegerProperty();
-   partID = new SimpleIntegerProperty();
-   min = new SimpleIntegerProperty();
-   max = new SimpleIntegerProperty();
+   price = new SimpleDoubleProperty (0.0);
+   inStock = new SimpleIntegerProperty(0);
+   partID = new SimpleIntegerProperty(0);
+   min = new SimpleIntegerProperty(0);
+   max = new SimpleIntegerProperty(0);
   
    }
    

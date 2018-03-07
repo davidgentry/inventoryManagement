@@ -79,33 +79,34 @@ public class ModifyPartController {
 
     @FXML
     void handleSave(ActionEvent event) throws IOException {
+       if (validInput()){
         
         String id = modID.getText();
         String name = modName.getText();
-        String inv = modInv.getText();
-        String price = modPrice.getText();
-        String max = modMax.getText();
-        String min = modMin.getText();
+        int inv = tryParseInt(modInv.getText());
+        Double price = tryParseDouble(modPrice.getText());
+        int max = tryParseInt(modMax.getText());
+        int min = tryParseInt(modMin.getText());
         String compORmach = companyORmach.getText();
         
         if (outsourced == false){
             InhousePart inhousePart = new InhousePart();
             inhousePart.setPartID(partID);
             inhousePart.setName(name);
-            inhousePart.setPrice(Double.parseDouble(price));
-            inhousePart.setMax(Integer.parseInt(max));
-            inhousePart.setMin(Integer.parseInt(min));
-            inhousePart.setInStock(Integer.parseInt(inv));
+            inhousePart.setPrice(price);
+            inhousePart.setMax(max);
+            inhousePart.setMin(min);
+            inhousePart.setInStock(inv);
             inhousePart.setMachineID(Integer.parseInt(compORmach));
             Inventory.updatePart(tempPartIndex, inhousePart);       
         } else {
             OutsourcedPart outsourcedPart = new OutsourcedPart();
             outsourcedPart.setPartID(Integer.parseInt(id));
             outsourcedPart.setName(name);
-            outsourcedPart.setPrice(Double.parseDouble(price));
-            outsourcedPart.setMax(Integer.parseInt(max));
-            outsourcedPart.setMin(Integer.parseInt(min));
-            outsourcedPart.setInStock(Integer.parseInt(inv));
+            outsourcedPart.setPrice(price);
+            outsourcedPart.setMax(max);
+            outsourcedPart.setMin(min);
+            outsourcedPart.setInStock(inv);
             outsourcedPart.setCompanyName(compORmach);
             Inventory.updatePart(tempPartIndex, outsourcedPart);
             //System.out.println(outsourcedPart);
@@ -117,6 +118,13 @@ public class ModifyPartController {
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setScene(mainScene);
         window.show();
+    }  else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ERROR");
+            alert.setHeaderText("Invalid Input");
+            alert.setContentText("Please Correct Invalid Input");
+            alert.showAndWait();
+        }
     }
     
    @FXML
@@ -130,6 +138,91 @@ public class ModifyPartController {
         outsourced = true;
         companyORmachine.setText("COMPANY NAME");
     }
+    
+       boolean invalidInv(){
+        int minInt =  tryParseInt(modMin.getText());
+        int maxInt = tryParseInt(modMax.getText());
+        int invInt = tryParseInt(modInv.getText());
+       
+        //verify that inventory is between minimum and maximum for each product
+        if (invInt < minInt || invInt > maxInt){
+            return true;
+        } else {
+            return false;
+        }
+    }
+    boolean invalidMinOrMax(){
+        int minInt =  tryParseInt(modMin.getText());
+        int maxInt = tryParseInt(modMax.getText());
+        //verify that min is not greater than max and vice versa
+        if (minInt > maxInt || maxInt < minInt){
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+        int tryParseInt(String value){
+        int newValue = 0;
+        if (value != null && value.length() > 0) {
+            try {
+                newValue += Integer.parseInt(value);
+                    } 
+            catch (NumberFormatException e) {
+                return 0;
+            }
+        } 
+        return newValue;
+    } 
+    
+    Double tryParseDouble(String value){
+        Double newValue = 0.0;
+        if (value != null && value.length() > 0) {
+            try {
+                newValue += Double.parseDouble(value);
+                    } 
+            catch (NumberFormatException e) {
+                return -1.0;
+            }
+        }
+        
+        return newValue;
+    } 
+    
+    boolean validInput() {
+       String errorMessageText = "";
+       if (modName.getText().length() == 0 || modName.getText() == null ){
+           errorMessageText += ("Error!Please add a valid product name.\n\n");
+       }
+       
+       if (modInv.getText().length() == 0 || modInv.getText() == null){
+           errorMessageText += ("Error!Please add a valid product inventory level.\n\n");
+       }
+       
+       if (modPrice.getText().length() == 0 || modPrice.getText() == null ){
+           errorMessageText += ("Error!Please add a valid product price.\n\n");
+       }
+    
+       if (invalidInv()){
+           errorMessageText += ("Insufficient inventory.  Please adjust inventory amount to a number between minimum and maximum amounts.\n\n");
+       }
+       
+       if (invalidMinOrMax()){
+           errorMessageText += ("Minimum cannot be larger than maximum, and maximum cannot be less than minimum.  Please adjust.\n\n");
+       }
+    
+       if (errorMessageText.length() == 0) {
+        return true;
+   
+   } else {
+           Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ERROR");
+            alert.setHeaderText("Invalid Input");
+            alert.setContentText(errorMessageText);
+            alert.showAndWait();
+            return false;
+       }
+   }
     
     public void initialize(){
     Part part = getPartInv().get(tempPartIndex);
