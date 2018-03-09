@@ -93,7 +93,8 @@ public class AddPartController  {
         Double price = tryParseDouble(addPrice.getText());
         int max = tryParseInt(addMax.getText());
         int min = tryParseInt(addMin.getText());
-        String compORmach = addCompany.getText();
+        int machID = tryParseInt(addCompany.getText());
+        String compName = addCompany.getText();
         
        if (validInput()){ 
         if (outsourced == false){
@@ -104,7 +105,7 @@ public class AddPartController  {
             inhousePart.setMax(max);
             inhousePart.setMin(min);
             inhousePart.setInStock(inv);
-            inhousePart.setMachineID(Integer.parseInt(compORmach));
+            inhousePart.setMachineID(machID);
             Inventory.addPartData(inhousePart);        
         } else {
             OutsourcedPart outsourcedPart = new OutsourcedPart();
@@ -114,7 +115,7 @@ public class AddPartController  {
             outsourcedPart.setMax(max);
             outsourcedPart.setMin(min);
             outsourcedPart.setInStock(inv);
-            outsourcedPart.setCompanyName(compORmach);
+            outsourcedPart.setCompanyName(compName);
             Inventory.addPartData(outsourcedPart);
             
             
